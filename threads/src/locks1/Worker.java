@@ -1,6 +1,5 @@
 package locks1;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,26 +8,36 @@ public class Worker {
 	
 	private Random random = new Random();
 	
+	private Object lock1 = new Object();
+	private Object lock2 = new Object();
+	
 	private ArrayList<Integer> list1 = new ArrayList<Integer>();
 	private ArrayList<Integer> list2 = new ArrayList<Integer>();
 	
 	public void stageOne(){
-		try {
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		synchronized (list2) {
+
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		list1.add(random.nextInt(200));
+		list1.add(random.nextInt(2));
 	}
 	
-	public void stageTwo(){
-		try {
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public  void stageTwo(){
+		
+		synchronized (lock1){
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		list2.add(random.nextInt(200));
@@ -75,7 +84,7 @@ public class Worker {
 			e.printStackTrace();
 		}
 		
-		process();
+		
 		
 		long end = System.currentTimeMillis();
 		

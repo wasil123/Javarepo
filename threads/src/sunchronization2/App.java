@@ -1,7 +1,5 @@
 package sunchronization2;
 
-import java.util.Iterator;
-
 public class App {
 	
 	private int count = 0;
