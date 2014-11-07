@@ -17,7 +17,7 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	
 	int width = 300;
-	int height = width / 16 * 9;
+	int height = 168;
 	int scale = 3;
 	
 	private Thread thread;
@@ -46,12 +46,38 @@ public class Game extends Canvas implements Runnable {
 
 	public void run() {
 		// TODO Auto-generated method stub
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		final double ns = 1000000000.0 / 60.0;
+		double delta = 0;
+		int frames = 0;
+		int updates = 0;
 		
 		
 		while (running) {
+			long now = System.nanoTime();
+			
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			while (delta >= 1)
+			{
+				update();
+				updates++;
+				delta--;
+			}
 			render();
-			update();
+			frames++;
+			
+			if (System.currentTimeMillis() - timer > 1000)
+			{
+				timer +=1000;
+				System.out.println("updates:" + updates + "FPS: " + frames);
+				frames = 0;
+				updates = 0;
+				
+			}
 		}
+		stop();
 	}
 	
 	private void update() {
